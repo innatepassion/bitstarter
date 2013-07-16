@@ -63,6 +63,11 @@ var checkHtmlFile = function(htmlfile, checksfile) {
 // function to validate and compare url data modified from checkhtml
 var checkUrl = function(url, checksfile) {
     rest.get(url).on('complete', function(data) {
+
+if(data instanceof Error) {
+            console.log(" ERROR: INVALID INPUT URL");
+            process.exit(1);}
+else{
         $ = cheerio.load(data);
         var checks = loadChecks(checksfile).sort();
         var out = {};
@@ -70,9 +75,11 @@ var checkUrl = function(url, checksfile) {
             var present = $(checks[ii]).length > 0;
             out[checks[ii]] = present;
         }
-//        var outJson = JSON.stringify(out, null, 4);
-  //      console.log(outJson);
-    });
+        var outJson = JSON.stringify(out, null, 4);
+        console.log(outJson);
+  }//end of else 
+
+ });
 }
 
 
@@ -93,11 +100,10 @@ if(require.main == module) {
         checkUrl(program.url, program.checks);
     } else {
         checkHtmlFile (program.file, program.checks);
-
-    var checkJson = checkHtmlFile(program.file, program.checks);
-   	}
-	 var outJson = JSON.stringify(checkJson, null, 4);
+	var checkJson = checkHtmlFile(program.file, program.checks);
+   	var outJson = JSON.stringify(checkJson, null, 4);
 	console.log(outJson);
+	}
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
