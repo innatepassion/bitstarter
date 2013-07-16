@@ -76,6 +76,7 @@ else{
             out[checks[ii]] = present;
         }
         var outJson = JSON.stringify(out, null, 4);
+	fs.writeFileSync('ValidationResult.json', outJson);
         console.log(outJson);
   }//end of else 
 
@@ -102,6 +103,7 @@ if(require.main == module) {
         checkHtmlFile (program.file, program.checks);
 	var checkJson = checkHtmlFile(program.file, program.checks);
    	var outJson = JSON.stringify(checkJson, null, 4);
+	fs.writeFileSync('ValidationResult.json', outJson);
 	console.log(outJson);
 	}
 } else {
